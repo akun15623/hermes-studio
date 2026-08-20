@@ -34,6 +34,10 @@ RUN npm ci --ignore-scripts && npm rebuild node-pty
 
 COPY . .
 
+# 构建期特性开关：docker build --build-arg VITE_DISABLED_FEATURES="devices,apiRelay,pet,usage,performance,versionPreview"
+ARG VITE_DISABLED_FEATURES=""
+ENV VITE_DISABLED_FEATURES=${VITE_DISABLED_FEATURES}
+
 RUN npm run build && npm prune --omit=dev
 RUN npm run verify:sharp-runtime
 

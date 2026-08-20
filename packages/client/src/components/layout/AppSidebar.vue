@@ -129,6 +129,7 @@ function handleUpdateClick() {
         <span>{{ t("sidebar.logs") }}</span>
       </RouteLinkItem>
       <RouteLinkItem
+        v-if="hasRoute('hermes.usage')"
         class="nav-item"
         :to="{ name: 'hermes.usage' }"
         :active="selectedKey === 'hermes.usage'"
@@ -150,7 +151,7 @@ function handleUpdateClick() {
         <span>{{ t("sidebar.usage") }}</span>
       </RouteLinkItem>
       <RouteLinkItem
-        v-if="isSuperAdmin"
+        v-if="isSuperAdmin && hasRoute('hermes.performance')"
         class="nav-item"
         :to="{ name: 'hermes.performance' }"
         :active="selectedKey === 'hermes.performance'"
@@ -266,6 +267,7 @@ function handleUpdateClick() {
         <span>{{ t("sidebar.theme") }}</span>
       </RouteLinkItem>
       <RouteLinkItem
+        v-if="hasRoute('hermes.petdex')"
         class="nav-item"
         :to="{ name: 'hermes.petdex' }"
         :active="selectedKey === 'hermes.petdex'"

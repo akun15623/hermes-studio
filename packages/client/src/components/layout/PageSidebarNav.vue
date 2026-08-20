@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { isStoredSuperAdmin } from '@/api/client'
 import { useSessionSearch } from '@/composables/useSessionSearch'
+import { isFeatureEnabled } from '@/utils/featureFlags'
 
 type ActiveSection = 'chat' | 'history' | 'connections' | 'agents' | 'models' | 'group' | 'global' | 'workflow'
 
@@ -173,7 +174,7 @@ function openApiRelay() {
         </svg>
         <span>{{ t('sidebar.models') }}</span>
       </button>
-      <button class="page-sidebar-tab" type="button" @click="openApiRelay">
+      <button v-if="isFeatureEnabled('apiRelay')" class="page-sidebar-tab" type="button" @click="openApiRelay">
         <svg
           width="15"
           height="15"

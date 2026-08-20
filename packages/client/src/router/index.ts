@@ -1,16 +1,15 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, type RouteRecordRaw, type RouteLocation } from 'vue-router'
 import { hasApiKey, isStoredSuperAdmin } from '@/api/client'
 import { hasDesktopBrowserBridge } from '@/utils/desktop-bridge'
 import { resolveLoginRedirect } from '@/utils/login-redirect'
+import { isFeatureEnabled } from '@/utils/featureFlags'
 
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes: [
+const routes: RouteRecordRaw[] = [
     {
       path: '/desktop-pet',
       name: 'desktop.pet',
       component: () => import('@/views/hermes/DesktopPetView.vue'),
-      meta: { public: true },
+      meta: { public: true, feature: 'pet' },
     },
     {
       path: '/',
@@ -103,12 +102,13 @@ const router = createRouter({
       path: '/hermes/usage',
       name: 'hermes.usage',
       component: () => import('@/views/hermes/UsageView.vue'),
+      meta: { feature: 'usage' },
     },
     {
       path: '/hermes/performance',
       name: 'hermes.performance',
       component: () => import('@/views/hermes/PerformanceView.vue'),
-      meta: { requiresSuperAdmin: true },
+      meta: { requiresSuperAdmin: true, feature: 'performance' },
     },
     {
       path: '/hermes/journey',
@@ -137,6 +137,7 @@ const router = createRouter({
       path: '/hermes/petdex',
       name: 'hermes.petdex',
       component: () => import('@/views/hermes/PetdexView.vue'),
+      meta: { feature: 'pet' },
     },
     {
       path: '/hermes/memory',
@@ -187,11 +188,11 @@ const router = createRouter({
     {
       path: '/hermes/devices',
       name: 'hermes.devices',
-      redirect: to => ({
+      redirect: (to: RouteLocation) => ({
         name: 'hermes.connections',
         query: { ...to.query, tab: 'devices' },
       }),
-      meta: { requiresSuperAdmin: true },
+      meta: { requiresSuperAdmin: true, feature: 'devices' },
     },
     {
       path: '/studio/agents',
@@ -245,14 +246,14 @@ const router = createRouter({
     },
     {
       path: '/hermes/history/group-chat/:roomId',
-      redirect: to => ({
+      redirect: (to: RouteLocation) => ({
         name: 'hermes.groupChatRoom',
         params: { roomId: to.params.roomId },
       }),
     },
     {
       path: '/hermes/group-chat/history/:roomId',
-      redirect: to => ({
+      redirect: (to: RouteLocation) => ({
         name: 'hermes.groupChatRoom',
         params: { roomId: to.params.roomId },
       }),
@@ -270,7 +271,7 @@ const router = createRouter({
       path: '/hermes/version-preview',
       name: 'hermes.versionPreview',
       component: () => import('@/views/hermes/VersionPreviewView.vue'),
-      meta: { requiresSuperAdmin: true },
+      meta: { requiresSuperAdmin: true, feature: 'versionPreview' },
     },
     {
       path: '/hermes/mcp',
@@ -278,7 +279,14 @@ const router = createRouter({
       component: () => import('@/views/hermes/McpManagerView.vue'),
       meta: { hermesConfig: true },
     },
-  ],
+].filter((r) => {
+  const feature = (r.meta as { feature?: string } | undefined)?.feature
+  return feature === undefined || isFeatureEnabled(feature)
+})
+
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes,
 })
 
 // Desktop exposes a dedicated settings page. Actual browsing stays inside the

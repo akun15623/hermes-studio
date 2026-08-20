@@ -7,6 +7,7 @@ import AppConnectionsPanel from '@/components/hermes/connections/AppConnectionsP
 import McuDevicesPanel from '@/components/hermes/connections/McuDevicesPanel.vue'
 import DevicesView from '@/views/hermes/DevicesView.vue'
 import { isStoredSuperAdmin } from '@/api/client'
+import { isFeatureEnabled } from '@/utils/featureFlags'
 
 type ConnectionTab = 'app' | 'mcu' | 'devices'
 
@@ -25,7 +26,7 @@ const isSuperAdmin = computed(() => isStoredSuperAdmin())
 
 function normalizeTab(value: unknown): ConnectionTab {
   if (value === 'mcu') return value
-  if (value === 'devices' && isSuperAdmin.value) return value
+  if (value === 'devices' && isSuperAdmin.value && isFeatureEnabled('devices')) return value
   return 'app'
 }
 
@@ -90,7 +91,7 @@ function updateTab(value: string | number) {
       <NTabPane name="mcu" :tab="t('connections.tabs.mcu')" display-directive="if">
         <McuDevicesPanel />
       </NTabPane>
-      <NTabPane v-if="isSuperAdmin" name="devices" :tab="t('connections.tabs.devices')" display-directive="if">
+      <NTabPane v-if="isSuperAdmin && isFeatureEnabled('devices')" name="devices" :tab="t('connections.tabs.devices')" display-directive="if">
         <DevicesView embedded />
       </NTabPane>
     </NTabs>
