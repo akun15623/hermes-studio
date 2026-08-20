@@ -102,6 +102,7 @@ function openApiRelay() {
         <span>{{ t('sidebar.search') }}</span>
       </button>
       <button
+        v-if="isFeatureEnabled('devices')"
         class="page-sidebar-tab"
         :class="{ active: active === 'connections' }"
         type="button"

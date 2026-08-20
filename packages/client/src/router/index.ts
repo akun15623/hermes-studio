@@ -184,6 +184,7 @@ const routes: RouteRecordRaw[] = [
       path: '/hermes/connections',
       name: 'hermes.connections',
       component: () => import('@/views/hermes/ChatView.vue'),
+      meta: { feature: 'devices' },
     },
     {
       path: '/hermes/devices',

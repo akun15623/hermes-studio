@@ -8,7 +8,7 @@
 //   VITE_DISABLED_FEATURES=devices,apiRelay,pet,usage,performance,versionPreview npm run build
 //
 // 特性 key 一览（与功能对应）：
-//   devices        —— 设备互联（Connections 面板的 devices tab）
+//   devices        —— 设备互联（PageSidebarNav 入口 + connections 页面，含 app/mcu/devices 三个 tab）
 //   apiRelay       —— 饲料 / API Relay（跳转 apikey.fun 的外链按钮）
 //   pet            —— 宠物（桌面宠物 desktop.pet + 宠物图鉴 hermes.petdex）
 //   usage          —— 用量统计

@@ -111,7 +111,7 @@ export function isFeatureEnabled(feature: string): boolean {
    ```
    （路由数组尾部再补上 `createRouter` 调用，见第 4 点。）
 
-3. **6 个路由加 `meta.feature` 标记**：
+3. **7 个路由加 `meta.feature` 标记**：
 
    | 路由 path / name | 新增的 meta |
    |---|---|
@@ -119,6 +119,7 @@ export function isFeatureEnabled(feature: string): boolean {
    | `/hermes/usage` (`hermes.usage`) | `meta: { feature: 'usage' }` |
    | `/hermes/performance` (`hermes.performance`) | `meta: { requiresSuperAdmin: true, feature: 'performance' }` |
    | `/hermes/petdex` (`hermes.petdex`) | `meta: { feature: 'pet' }` |
+   | `/hermes/connections` (`hermes.connections`) | `meta: { feature: 'devices' }` |
    | `/hermes/devices` (`hermes.devices`) | `meta: { requiresSuperAdmin: true, feature: 'devices' }` |
    | `/hermes/version-preview` (`hermes.versionPreview`) | `meta: { requiresSuperAdmin: true, feature: 'versionPreview' }` |
 
@@ -169,10 +170,17 @@ export function isFeatureEnabled(feature: string): boolean {
 
 ### 4.5 修改：`packages/client/src/components/layout/PageSidebarNav.vue`
 
-改动点（1 处，用 `isFeatureEnabled('apiRelay')`）：
+改动点（2 处，用 `isFeatureEnabled()`）：
 
 1. 新增 import `isFeatureEnabled`。
-2. 「饲料 / API Relay」外链按钮：
+2. 「设备互联」按钮（跳转 `hermes.connections`）：
+   ```diff
+    <button
+   +  v-if="isFeatureEnabled('devices')"
+      class="page-sidebar-tab"
+      :class="{ active: active === 'connections' }"
+   ```
+3. 「饲料 / API Relay」外链按钮：
    ```diff
    -<button class="page-sidebar-tab" type="button" @click="openApiRelay">
    +<button v-if="isFeatureEnabled('apiRelay')" class="page-sidebar-tab" type="button" @click="openApiRelay">
@@ -202,7 +210,7 @@ export function isFeatureEnabled(feature: string): boolean {
 
 | key | 中文名 | 实际功能 | 禁用涉及的文件 |
 |---|---|---|---|
-| `devices` | 设备互联 | Connections 面板的 devices tab + `/hermes/devices` 重定向 | `router/index.ts`、`ConnectionsPanel.vue` |
+| `devices` | 设备互联 | PageSidebarNav 入口 + `/hermes/connections` 页面（含 app/mcu/devices 三个 tab）+ `/hermes/devices` 重定向 | `router/index.ts`、`PageSidebarNav.vue`、`ConnectionsPanel.vue` |
 | `apiRelay` | 饲料 | 跳转 apikey.fun 的外链按钮 | `PageSidebarNav.vue` |
 | `pet` | 宠物 | 桌面宠物 `/desktop-pet` + 宠物图鉴 `/hermes/petdex` | `router/index.ts`、`AppSidebar.vue` |
 | `usage` | 用量统计 | `/hermes/usage` | `router/index.ts`、`AppSidebar.vue` |
