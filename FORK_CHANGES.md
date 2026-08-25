@@ -12,9 +12,9 @@
 | 项 | 值 |
 |---|---|
 | 本仓库 | `https://github.com/akun15623/hermes-studio.git`（`origin`） |
-| 官方上游 | `EKKOLearnAI/hermes-studio`（尚未配置 `upstream` remote） |
-| 当前基线 commit | `ec2b9e9ab546497b373db57dc08aa91c0ec3e33a`（官方 PR #2627 `feat(models): manage the fallback provider chain from the Web UI`） |
-| 项目版本 | `hermes-web-ui` v0.6.44 |
+| 官方上游 | `EKKOLearnAI/hermes-studio`（已配置 `upstream` remote：`git@github.com:EKKOLearnAI/hermes-studio.git`） |
+| 当前基线 commit | `a5134053`（v0.6.47 已发布；HEAD 位于 #2735 `[codex] preserve global coding agent context after stop`，#2721 为 release commit） |
+| 项目版本 | `hermes-web-ui` v0.6.47 |
 | 前端源码目录 | `packages/client/src/` |
 
 ---
