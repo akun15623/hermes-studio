@@ -13,8 +13,8 @@
 |---|---|
 | 本仓库 | `https://github.com/akun15623/hermes-studio.git`（`origin`） |
 | 官方上游 | `EKKOLearnAI/hermes-studio`（已配置 `upstream` remote：`git@github.com:EKKOLearnAI/hermes-studio.git`） |
-| 当前基线 commit | `a5134053`（v0.6.47 已发布；HEAD 位于 #2735 `[codex] preserve global coding agent context after stop`，#2721 为 release commit） |
-| 项目版本 | `hermes-web-ui` v0.6.47 |
+| 当前基线 commit | `4ae23c69`（2026-08-27 同步：ff 至 v0.6.47 后同周期 10 个 commit，#2761 收尾；上一基线 `a5134053`） |
+| 项目版本 | `hermes-web-ui` v0.6.47（上游未 bump，同版本迭代） |
 | 前端源码目录 | `packages/client/src/` |
 
 ---
@@ -242,12 +242,17 @@ VITE_DISABLED_FEATURES=pet,usage npm run build
 
 ```bash
 docker build \
-  --build-arg VITE_DISABLED_FEATURES="devices,apiRelay,pet,usage,performance,versionPreview" \
+  --build-arg VITE_DISABLED_FEATURES="devices,apiRelay,usage,performance,versionPreview" \
   -t ekkoye8888/hermes-web-ui:custom-latest .
 ```
 
 > `VITE_DISABLED_FEATURES` 通过 `--build-arg` 传入（见 4.6），在 `npm run build` 的 `vite build` 阶段生效。
 > 不传 `--build-arg` 时镜像与官方一致（全部启用）。
+>
+> **2026-08-27 部署记录**：应用户要求「放出宠物功能」，构建列表自
+> `devices,apiRelay,pet,usage,performance,versionPreview` 中移除 `pet`——
+> 桌面宠物（desktop.pet）与宠物图鉴（hermes.petdex）重新可见。代码零改动（flag 机制保持），
+> 仅构建参数变化，重建镜像后生效。
 
 ### 6.4 验证
 
