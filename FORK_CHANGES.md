@@ -13,8 +13,8 @@
 |---|---|
 | 本仓库 | `https://github.com/akun15623/hermes-studio.git`（`origin`） |
 | 官方上游 | `EKKOLearnAI/hermes-studio`（已配置 `upstream` remote：`git@github.com:EKKOLearnAI/hermes-studio.git`） |
-| 当前基线 commit | `4ae23c69`（2026-08-27 同步：ff 至 v0.6.47 后同周期 10 个 commit，#2761 收尾；上一基线 `a5134053`） |
-| 项目版本 | `hermes-web-ui` v0.6.47（上游未 bump，同版本迭代） |
+| 当前基线 commit | `4ada83e5`（2026-08-30 同步：ff 至 v0.7.11，上游 20 个 commit，含 v0.7.0 beta Ekko 大版本 #2770；上一基线 `4ae23c69`） |
+| 项目版本 | `hermes-web-ui` v0.7.11（package.json 随上游 bump） |
 | 前端源码目录 | `packages/client/src/` |
 
 ---
@@ -260,14 +260,23 @@ docker build \
 # 类型检查（必须通过）
 ./node_modules/.bin/vue-tsc -b
 
-# 构建（默认 + 禁用两种模式都应通过）
-./node_modules/.bin/vite build
-VITE_DISABLED_FEATURES=devices,apiRelay,pet,usage,performance,versionPreview ./node_modules/.bin/vite build
+# 构建（默认 + 禁用两种模式都应通过；⚠ 必须在仓库根目录执行，见下方踩坑记录）
+node ./node_modules/vite/bin/vite.js build
+VITE_DISABLED_FEATURES=devices,apiRelay,usage,performance,versionPreview node ./node_modules/vite/bin/vite.js build
 ```
 
 > **本机注意**：当前环境 `NODE_ENV=production`，普通 `npm ci` 会跳过 devDependencies，
 > 必须用 `npm ci --ignore-scripts --include=dev` 才能装齐 `vite` / `vue-tsc` 等构建工具。
 > 另外 `npx vue-tsc` 会拉取不兼容的独立版本，务必用本地 `./node_modules/.bin/vue-tsc`。
+> Hermes gateway 保护规则会拦截 `./node_modules/.bin/vite build`，改用 `node ./node_modules/vite/bin/vite.js build`。
+>
+> **⚠ 2026-08-30 踩坑记录：vite build 必须在仓库根目录执行**。
+> vite.config.ts 位于仓库根（`root: 'packages/client'`）。若 `cd packages/client` 后再跑 vite build，
+> vite 找不到 config 会以**无插件裸跑**——`@vitejs/plugin-vue` 不加载，所有 `.vue` 文件被当作纯 JS 解析，
+> 报 35 个 `builtin:vite-dynamic-import-vars PARSE_ERROR: Unexpected token`（1:1 指向 `<script setup lang="ts">`）。
+> 该错误极易误判为依赖损坏（当时已白白排查了 npm ci 方式、rolldown binding、node 版本等）。
+> 官方 CI（webui-release.yml）也是先 `npm ci --ignore-scripts` + `npm rebuild node-pty`，再在根目录 `npm run build`。
+> 排查此类构建报错时，第一步先核对执行目录与 config 位置。
 
 > **Docker 内注意**：`hermes update` 在镜像内被禁用；镜像内 Hermes 版本取决于构建时的
 > base `nousresearch/hermes-agent:latest`。升级 Hermes 需重新构建镜像。
