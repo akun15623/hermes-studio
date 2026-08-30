@@ -13,8 +13,8 @@
 |---|---|
 | 本仓库 | `https://github.com/akun15623/hermes-studio.git`（`origin`） |
 | 官方上游 | `EKKOLearnAI/hermes-studio`（已配置 `upstream` remote：`git@github.com:EKKOLearnAI/hermes-studio.git`） |
-| 当前基线 commit | `4ada83e5`（2026-08-30 同步：ff 至 v0.7.11，上游 20 个 commit，含 v0.7.0 beta Ekko 大版本 #2770；上一基线 `4ae23c69`） |
-| 项目版本 | `hermes-web-ui` v0.7.11（package.json 随上游 bump） |
+| 当前基线 commit | `7c1698e4`（2026-08-30 二次同步：ff 至 v0.7.12，上游 2 个 commit，ekko-agent runtime 自愈 #2797；上一基线 `4ada83e5`/v0.7.11） |
+| 项目版本 | `hermes-web-ui` v0.7.12 |
 | 前端源码目录 | `packages/client/src/` |
 
 ---
