@@ -13,8 +13,8 @@
 |---|---|
 | 本仓库 | `https://github.com/akun15623/hermes-studio.git`（`origin`） |
 | 官方上游 | `EKKOLearnAI/hermes-studio`（已配置 `upstream` remote：`git@github.com:EKKOLearnAI/hermes-studio.git`） |
-| 当前基线 commit | `7c1698e4`（2026-08-30 二次同步：ff 至 v0.7.12，上游 2 个 commit，ekko-agent runtime 自愈 #2797；上一基线 `4ada83e5`/v0.7.11） |
-| 项目版本 | `hermes-web-ui` v0.7.12 |
+| 当前基线 commit | `17321c15`（2026-09-01 三次同步：ff 至 v0.7.15，上游 12 个 commit：新增 Grok coding agent #2832、coding-agents isolated global mode #2828、远程 runtime 重启桥接 #2827、runtime 重启循环修复 #2822 等；上一基线 `7c1698e4`/v0.7.12） |
+| 项目版本 | `hermes-web-ui` v0.7.15 |
 | 前端源码目录 | `packages/client/src/` |
 
 ---
